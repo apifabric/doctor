@@ -1,0 +1,105 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table Appointment {
+    id INTEGER
+    patient_id INTEGER
+    doctor_id INTEGER
+    appointment_date DATETIME
+    notes VARCHAR
+    }
+
+Table Doctor {
+    id INTEGER
+    first_name VARCHAR
+    last_name VARCHAR
+    specialty VARCHAR
+    }
+
+Table Patient {
+    id INTEGER
+    first_name VARCHAR
+    last_name VARCHAR
+    dob DATETIME
+    gender VARCHAR
+    }
+
+Table Billing {
+    id INTEGER
+    patient_id INTEGER
+    amount_due FLOAT
+    due_date DATETIME
+    paid_date DATETIME
+    }
+
+Table Department {
+    id INTEGER
+    name VARCHAR
+    location VARCHAR
+    }
+
+Table Insurance {
+    id INTEGER
+    patient_id INTEGER
+    provider_name VARCHAR
+    policy_number VARCHAR
+    }
+
+Table LabTest {
+    id INTEGER
+    patient_id INTEGER
+    test_name VARCHAR
+    test_date DATETIME
+    result VARCHAR
+    }
+
+Table MedicalRecord {
+    id INTEGER
+    patient_id INTEGER
+    diagnosis VARCHAR
+    treatment VARCHAR
+    record_date DATETIME
+    }
+
+Table Nurse {
+    id INTEGER
+    first_name VARCHAR
+    last_name VARCHAR
+    department_id INTEGER
+    }
+
+Table Prescription {
+    id INTEGER
+    appointment_id INTEGER
+    medication_name VARCHAR
+    dosage VARCHAR
+    instructions VARCHAR
+    }
+
+Table Room {
+    id INTEGER
+    room_number VARCHAR
+    department_id INTEGER
+    Type VARCHAR
+    }
+
+Table Treatment {
+    id INTEGER
+    medical_record_id INTEGER
+    treatment_name VARCHAR
+    cost FLOAT
+    }
+
+
+
+// Relationships
+    Ref: Appointment.(doctor_id) < Doctor.(id)
+    Ref: Appointment.(patient_id) < Patient.(id)
+    Ref: Billing.(patient_id) < Patient.(id)
+    Ref: Insurance.(patient_id) < Patient.(id)
+    Ref: LabTest.(patient_id) < Patient.(id)
+    Ref: MedicalRecord.(patient_id) < Patient.(id)
+    Ref: Nurse.(department_id) < Department.(id)
+    Ref: Prescription.(appointment_id) < Appointment.(id)
+    Ref: Room.(department_id) < Department.(id)
+    Ref: Treatment.(medical_record_id) < MedicalRecord.(id)

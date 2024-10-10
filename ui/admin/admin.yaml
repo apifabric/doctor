@@ -1,0 +1,342 @@
+about:
+  date: October 10, 2024 13:23:24
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 10
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Appointment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: doctor_id
+      required: true
+    - name: patient_id
+      required: true
+    - name: appointment_date
+      required: true
+    - name: notes
+    description: Stores appointment details.
+    info_list: Stores appointment details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - appointment_id
+      name: PrescriptionList
+      resource: Prescription
+    - direction: toone
+      fks:
+      - doctor_id
+      name: doctor
+      resource: Doctor
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: Appointment
+    user_key: id
+  Billing:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: patient_id
+      required: true
+    - name: amount_due
+      required: true
+    - name: due_date
+      required: true
+    - name: paid_date
+    description: Manages billing information.
+    info_list: Manages billing information.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: Billing
+    user_key: id
+  Department:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: location
+    - name: id
+    description: Information about hospital departments.
+    info_list: Information about hospital departments.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - department_id
+      name: NurseList
+      resource: Nurse
+    - direction: tomany
+      fks:
+      - department_id
+      name: RoomList
+      resource: Room
+    type: Department
+    user_key: name
+  Doctor:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: last_name
+      required: true
+    - name: specialty
+    - name: id
+    description: Stores doctor information.
+    info_list: Stores doctor information.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - doctor_id
+      name: AppointmentList
+      resource: Appointment
+    type: Doctor
+    user_key: first_name
+  Insurance:
+    attributes:
+    - label: ' provider_name*'
+      name: provider_name
+      required: true
+      search: true
+      sort: true
+    - name: patient_id
+      required: true
+    - name: policy_number
+      required: true
+    - name: id
+    description: Stores insurance details for patients.
+    info_list: Stores insurance details for patients.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: Insurance
+    user_key: provider_name
+  LabTest:
+    attributes:
+    - label: ' test_name*'
+      name: test_name
+      required: true
+      search: true
+      sort: true
+    - name: patient_id
+      required: true
+    - name: test_date
+      required: true
+    - name: result
+    - name: id
+    description: Records laboratory tests results.
+    info_list: Records laboratory tests results.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: LabTest
+    user_key: test_name
+  MedicalRecord:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: patient_id
+      required: true
+    - name: diagnosis
+    - name: treatment
+    - name: record_date
+      required: true
+    description: Stores medical records for each patient.
+    info_list: Stores medical records for each patient.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - medical_record_id
+      name: TreatmentList
+      resource: Treatment
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: MedicalRecord
+    user_key: id
+  Nurse:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: department_id
+    - name: last_name
+      required: true
+    - name: id
+    description: Stores nurse information.
+    info_list: Stores nurse information.
+    tab_groups:
+    - direction: toone
+      fks:
+      - department_id
+      name: department
+      resource: Department
+    type: Nurse
+    user_key: first_name
+  Patient:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: last_name
+      required: true
+    - name: dob
+      required: true
+    - name: gender
+    - name: id
+    description: Stores patient information.
+    info_list: Stores patient information.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - patient_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: tomany
+      fks:
+      - patient_id
+      name: BillingList
+      resource: Billing
+    - direction: tomany
+      fks:
+      - patient_id
+      name: InsuranceList
+      resource: Insurance
+    - direction: tomany
+      fks:
+      - patient_id
+      name: LabTestList
+      resource: LabTest
+    - direction: tomany
+      fks:
+      - patient_id
+      name: MedicalRecordList
+      resource: MedicalRecord
+    type: Patient
+    user_key: first_name
+  Prescription:
+    attributes:
+    - label: ' medication_name*'
+      name: medication_name
+      required: true
+      search: true
+      sort: true
+    - name: appointment_id
+      required: true
+    - name: dosage
+    - name: instructions
+    - name: id
+    description: Contains prescription data.
+    info_list: Contains prescription data.
+    tab_groups:
+    - direction: toone
+      fks:
+      - appointment_id
+      name: appointment
+      resource: Appointment
+    type: Prescription
+    user_key: medication_name
+  Room:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: department_id
+    - name: room_number
+      required: true
+    - name: Type
+    description: Contains details about hospital rooms.
+    info_list: Contains details about hospital rooms.
+    tab_groups:
+    - direction: toone
+      fks:
+      - department_id
+      name: department
+      resource: Department
+    type: Room
+    user_key: id
+  Treatment:
+    attributes:
+    - label: ' treatment_name*'
+      name: treatment_name
+      required: true
+      search: true
+      sort: true
+    - name: medical_record_id
+      required: true
+    - name: cost
+      required: true
+    - name: id
+    description: Details of treatments given to patients.
+    info_list: Details of treatments given to patients.
+    tab_groups:
+    - direction: toone
+      fks:
+      - medical_record_id
+      name: medical_record
+      resource: MedicalRecord
+    type: Treatment
+    user_key: treatment_name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

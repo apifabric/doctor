@@ -1,0 +1,526 @@
+about:
+  date: October 10, 2024 13:23:24
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Appointment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: doctor_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: patient_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: appointment_date
+      required: true
+      template: date
+      type: DATETIME
+    - name: notes
+      template: text
+      type: VARCHAR
+    description: Stores appointment details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Stores appointment details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - appointment_id
+      name: PrescriptionList
+      resource: Prescription
+    - direction: toone
+      fks:
+      - doctor_id
+      name: doctor
+      resource: Doctor
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: Appointment
+  Billing:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: patient_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: amount_due
+      required: true
+      template: real
+      type: FLOAT
+    - name: due_date
+      required: true
+      template: date
+      type: DATETIME
+    - name: paid_date
+      template: date
+      type: DATETIME
+    description: Manages billing information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Manages billing information.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: Billing
+  Department:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: location
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Information about hospital departments.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Information about hospital departments.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - department_id
+      name: NurseList
+      resource: Nurse
+    - direction: tomany
+      fks:
+      - department_id
+      name: RoomList
+      resource: Room
+    type: Department
+  Doctor:
+    columns:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: last_name
+      required: true
+      template: text
+      type: VARCHAR
+    - name: specialty
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores doctor information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: first_name
+    home_template: home_template.html
+    info_list: Stores doctor information.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - doctor_id
+      name: AppointmentList
+      resource: Appointment
+    type: Doctor
+  Insurance:
+    columns:
+    - label: ' provider_name*'
+      name: provider_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: patient_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: policy_number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores insurance details for patients.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: provider_name
+    home_template: home_template.html
+    info_list: Stores insurance details for patients.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: Insurance
+  LabTest:
+    columns:
+    - label: ' test_name*'
+      name: test_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: patient_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: test_date
+      required: true
+      template: date
+      type: DATETIME
+    - name: result
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Records laboratory tests results.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: test_name
+    home_template: home_template.html
+    info_list: Records laboratory tests results.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: LabTest
+  MedicalRecord:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: patient_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: diagnosis
+      template: text
+      type: VARCHAR
+    - name: treatment
+      template: text
+      type: VARCHAR
+    - name: record_date
+      required: true
+      template: date
+      type: DATETIME
+    description: Stores medical records for each patient.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Stores medical records for each patient.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - medical_record_id
+      name: TreatmentList
+      resource: Treatment
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: MedicalRecord
+  Nurse:
+    columns:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: department_id
+      template: integer
+      type: INTEGER
+    - name: last_name
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores nurse information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: first_name
+    home_template: home_template.html
+    info_list: Stores nurse information.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - department_id
+      name: department
+      resource: Department
+    type: Nurse
+  Patient:
+    columns:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: last_name
+      required: true
+      template: text
+      type: VARCHAR
+    - name: dob
+      required: true
+      template: date
+      type: DATETIME
+    - name: gender
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores patient information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: first_name
+    home_template: home_template.html
+    info_list: Stores patient information.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - patient_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: tomany
+      fks:
+      - patient_id
+      name: BillingList
+      resource: Billing
+    - direction: tomany
+      fks:
+      - patient_id
+      name: InsuranceList
+      resource: Insurance
+    - direction: tomany
+      fks:
+      - patient_id
+      name: LabTestList
+      resource: LabTest
+    - direction: tomany
+      fks:
+      - patient_id
+      name: MedicalRecordList
+      resource: MedicalRecord
+    type: Patient
+  Prescription:
+    columns:
+    - label: ' medication_name*'
+      name: medication_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: appointment_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: dosage
+      template: text
+      type: VARCHAR
+    - name: instructions
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Contains prescription data.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: medication_name
+    home_template: home_template.html
+    info_list: Contains prescription data.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - appointment_id
+      name: appointment
+      resource: Appointment
+    type: Prescription
+  Room:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: department_id
+      template: integer
+      type: INTEGER
+    - name: room_number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: Type
+      template: text
+      type: VARCHAR
+    description: Contains details about hospital rooms.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Contains details about hospital rooms.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - department_id
+      name: department
+      resource: Department
+    type: Room
+  Treatment:
+    columns:
+    - label: ' treatment_name*'
+      name: treatment_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: medical_record_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: cost
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Details of treatments given to patients.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: treatment_name
+    home_template: home_template.html
+    info_list: Details of treatments given to patients.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - medical_record_id
+      name: medical_record
+      resource: MedicalRecord
+    type: Treatment
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false
